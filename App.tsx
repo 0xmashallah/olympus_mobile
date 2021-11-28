@@ -1,5 +1,5 @@
 import '@ethersproject/shims';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ImageProps,
@@ -7,19 +7,21 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView,
+  Button,
 } from 'react-native';
-import {ContractId, getErcContract} from './src/AddressBook';
-import {setup} from './src/Web3Setup';
-import {useEthBalance} from './src/Web3Hooks';
-import {BetterImage} from './src/components/BetterImage';
-import {addressIsValid} from './src/Web3Helpers';
+import { ContractId, getErcContract } from './src/AddressBook';
+import { setup } from './src/Web3Setup';
+import { useEthBalance } from './src/Web3Hooks';
+import { BetterImage } from './src/components/BetterImage';
+import { addressIsValid } from './src/Web3Helpers';
 import ethIcon from './src/icons/eth-icon.png';
 import ohmIcon from './src/icons/ohm-icon.png';
 import sOhmIcon from './src/icons/sohm-icon.png';
 
 setup();
 
-export const Icon = (p: ImageProps & {size: number}) => (
+export const Icon = (p: ImageProps & { size: number }) => (
   <Image
     {...p}
     style={{
@@ -56,7 +58,7 @@ const App = () => {
   }, [address]);
 
   return (
-    <View>
+    <ScrollView>
       <BetterImage
         resizeMode="contain"
         source={{
@@ -65,7 +67,7 @@ const App = () => {
       />
       <View
         style={{
-          padding: 25,
+          padding: 25
         }}>
         <Text
           style={{
@@ -137,7 +139,7 @@ const App = () => {
           </View>
         ))}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
