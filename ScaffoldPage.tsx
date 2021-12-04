@@ -13,9 +13,9 @@ import {setup} from './src/Web3Setup';
 import {useEthBalance} from './src/Web3Hooks';
 import {BetterImage} from './src/components/BetterImage';
 import {addressIsValid} from './src/Web3Helpers';
-import ethIcon from './src/icons/eth-icon.png';
-import ohmIcon from './src/icons/ohm-icon.png';
-import sOhmIcon from './src/icons/sohm-icon.png';
+import ethIcon from './src/assets/icons/eth-icon.png';
+import ohmIcon from './src/assets/icons/ohm-icon.png';
+import sOhmIcon from './src/assets/icons/sohm-icon.png';
 
 setup();
 
@@ -30,7 +30,7 @@ export const Icon = (p: ImageProps & {size: number}) => (
   />
 );
 
-const App = () => {
+const ScaffoldPage = () => {
   const [address, setAddress] = useState<string>('');
   const [ohmBalance, setOhmBalance] = useState<number>(0);
   const [sOhmBalance, setSOhmBalance] = useState<number>(0);
@@ -43,7 +43,7 @@ const App = () => {
         setSOhmBalance(0);
         return;
       }
-      console.log('getting balance n shit');
+      console.log('getting balance');
       const ohm = getErcContract(ContractId.OHM);
       const sOhm = getErcContract(ContractId.SOHM);
       const base = 1e9;
@@ -141,4 +141,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ScaffoldPage;
