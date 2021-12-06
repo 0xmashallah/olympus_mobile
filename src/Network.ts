@@ -3,8 +3,6 @@ import {AddressBookType} from './GenericTypes';
 export enum Network {
   ETHEREUM,
   AVAX,
-  FANTOM,
-  POLYGON,
   MOONRIVER,
 }
 
@@ -13,7 +11,7 @@ export type GlobalContext = {
 };
 
 export const globalContext: GlobalContext = {
-  network: Network.ETHEREUM,
+  network: Network.AVAX,
 };
 
 export const setNetwork = (network: Network) => {

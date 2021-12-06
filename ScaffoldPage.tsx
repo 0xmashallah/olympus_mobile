@@ -1,37 +1,47 @@
-import '@ethersproject/shims';
 import React, {useEffect, useState} from 'react';
 import {
+  GestureResponderEvent,
   Image,
   ImageProps,
   ImageStyle,
   Text,
   TextInput,
+  TouchableNativeFeedback,
   View,
 } from 'react-native';
 import {ContractId, getErcContract} from './src/AddressBook';
-import {setup} from './src/Web3Setup';
 import {useEthBalance} from './src/Web3Hooks';
 import {BetterImage} from './src/components/BetterImage';
 import {addressIsValid} from './src/Web3Helpers';
+// @ts-ignore
 import ethIcon from './src/assets/icons/eth-icon.png';
+// @ts-ignore
 import ohmIcon from './src/assets/icons/ohm-icon.png';
+// @ts-ignore
 import sOhmIcon from './src/assets/icons/sohm-icon.png';
 
-setup();
-
-export const Icon = (p: ImageProps & {size: number}) => (
-  <Image
-    {...p}
-    style={{
-      ...(p.style as ImageStyle),
-      width: p.size,
-      height: p.size,
-    }}
-  />
+export const Icon = (
+  p: ImageProps & {
+    size: number;
+    onPress?: (event: GestureResponderEvent) => void;
+  },
+) => (
+  <TouchableNativeFeedback onPress={p.onPress}>
+    <Image
+      {...p}
+      style={{
+        ...(p.style as ImageStyle),
+        width: p.size,
+        height: p.size,
+      }}
+    />
+  </TouchableNativeFeedback>
 );
 
 const ScaffoldPage = () => {
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<string>(
+    '0xA1cD7B75cAc5045f476AE865643F4Cf66aEf76d7',
+  );
   const [ohmBalance, setOhmBalance] = useState<number>(0);
   const [sOhmBalance, setSOhmBalance] = useState<number>(0);
   const ethBalance = useEthBalance(address);

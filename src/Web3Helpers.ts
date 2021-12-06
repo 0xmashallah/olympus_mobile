@@ -1,8 +1,10 @@
 import {ethers} from 'ethers';
-import {globalContext, RPCAddressBook} from './Network';
+import {globalContext, Network, RPCAddressBook} from './Network';
 
-export const getProvider = () =>
-  ethers.getDefaultProvider(RPCAddressBook[globalContext.network]);
+export const getProvider = (network: Network = globalContext.network) => {
+  const rpcAddress = RPCAddressBook[network];
+  return ethers.getDefaultProvider(rpcAddress);
+};
 
 export const web3Provider = () =>
   new ethers.providers.JsonRpcProvider(RPCAddressBook[globalContext.network]);

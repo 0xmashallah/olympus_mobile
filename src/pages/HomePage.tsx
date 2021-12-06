@@ -8,12 +8,15 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+// @ts-ignore
 import ohmLogo from '../assets/icons/ohm-landing.png';
+// @ts-ignore
 import bank from '../assets/images/bank.png';
+// @ts-ignore
 import gradient from '../assets/images/gradient.png';
 import LinearGradient from 'react-native-linear-gradient';
 import {NavigationProp} from '@react-navigation/native';
-import {BalancePage} from './BalancePage';
+import {DashboardPage} from './DashboardPage';
 
 const OlympusButton = (props: ButtonProps & {style: ViewStyle}) => (
   <View
@@ -96,7 +99,7 @@ export const HomePage = ({
               position: 'absolute',
               bottom: 40,
             }}
-            onPress={() => navigate(BalancePage.routeName)}
+            onPress={() => navigate(DashboardPage.routeName)}
           />
         </ImageBackground>
       </LinearGradient>
