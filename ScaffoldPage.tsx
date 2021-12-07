@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import {ContractId, getErcContract} from './src/AddressBook';
-import {useEthBalance} from './src/Web3Hooks';
+import {useNetworkCurrencyBalance} from './src/Web3Hooks';
 import {BetterImage} from './src/components/BetterImage';
 import {addressIsValid} from './src/Web3Helpers';
 // @ts-ignore
@@ -44,7 +44,7 @@ const ScaffoldPage = () => {
   );
   const [ohmBalance, setOhmBalance] = useState<number>(0);
   const [sOhmBalance, setSOhmBalance] = useState<number>(0);
-  const ethBalance = useEthBalance(address);
+  const ethBalance = useNetworkCurrencyBalance(address);
 
   useEffect(() => {
     const load = async () => {

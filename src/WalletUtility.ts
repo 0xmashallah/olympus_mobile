@@ -1,6 +1,7 @@
 import {Wallet} from 'ethers';
 import Keychain, {ACCESS_CONTROL} from 'react-native-keychain';
 import {useEffect, useState} from 'react';
+import {useWalletContext} from './WalletProvider';
 
 export const createNewKeyAndSave = async () => {
   const wallet = Wallet.createRandom();
@@ -40,15 +41,7 @@ export const usePrivateKey = () => {
   return privateKey;
 };
 
-export const useWallet = () => {
-  const privateKey = usePrivateKey();
-  if (!privateKey) {
-    return null;
-  }
-  return new Wallet(privateKey);
-};
-
 export const useAddress = (): string => {
-  const wallet = useWallet();
-  return wallet?.address ?? '';
+  const wallet = useWalletContext();
+  return wallet.address;
 };

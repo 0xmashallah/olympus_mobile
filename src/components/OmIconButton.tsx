@@ -32,9 +32,12 @@ const ButtonShell = (
   </View>
 );
 
-export const OmButton = (
-  b: ButtonProps & {style?: ViewStyle; textStyle?: TextStyle},
-) => (
+export interface OmButtonProps extends ButtonProps {
+  style?: ViewStyle;
+  textStyle?: TextStyle;
+}
+
+export const OmButton = (b: OmButtonProps) => (
   <ButtonShell onPress={b.onPress} style={b.style}>
     <Text
       style={{

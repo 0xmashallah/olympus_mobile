@@ -34,7 +34,7 @@ export class Erc20Token {
   }
 
   toBigNumber(n: number): BigNumber {
-    return BigNumber.from(n * Math.pow(10, SIGNIFICANT_DIGITS))
+    return BigNumber.from(Math.floor(n * Math.pow(10, SIGNIFICANT_DIGITS)))
       .mul(pow(this.decimals))
       .div(pow(SIGNIFICANT_DIGITS));
   }

@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  ButtonProps,
-  Image,
-  ImageBackground,
-  Text,
-  TouchableNativeFeedback,
-  View,
-  ViewStyle,
-} from 'react-native';
+import {Image, ImageBackground, Text, View} from 'react-native';
 // @ts-ignore
 import ohmLogo from '../assets/icons/ohm-landing.png';
 // @ts-ignore
@@ -16,30 +8,8 @@ import bank from '../assets/images/bank.png';
 import gradient from '../assets/images/gradient.png';
 import LinearGradient from 'react-native-linear-gradient';
 import {NavigationProp} from '@react-navigation/native';
-import {DashboardPage} from './DashboardPage';
-
-const OlympusButton = (props: ButtonProps & {style: ViewStyle}) => (
-  <View
-    style={{
-      backgroundColor: '#FFC768',
-      paddingHorizontal: 42,
-      paddingVertical: 20,
-      width: 230,
-      alignItems: 'center',
-      borderRadius: 33.5,
-      ...props.style,
-    }}>
-    <TouchableNativeFeedback onPress={props.onPress}>
-      <Text
-        style={{
-          fontSize: 18,
-          fontWeight: 'bold',
-        }}>
-        {props.title}
-      </Text>
-    </TouchableNativeFeedback>
-  </View>
-);
+import {DashboardPage} from './dashboard_page/DashboardPage';
+import {OlympusButton} from '../components/OlympusButton';
 
 export const HomePage = ({
   navigation: {navigate},

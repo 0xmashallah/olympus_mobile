@@ -6,6 +6,7 @@ import {NetworkAddressBookType} from './GenericTypes';
 import {UniswapV2Router} from './abi/UniswapV2Router';
 import {getProvider} from './Web3Helpers';
 import {RebasingERC20ABI} from './abi/RebasingERC20';
+import {useWalletContext} from './WalletProvider';
 
 export enum ContractId {
   WETH,
@@ -37,12 +38,12 @@ const NetworkAddressBook: NetworkAddressBookType = {
   },
 };
 
-const getAddressBook = () => {
-  return NetworkAddressBook[globalContext.network];
+const getAddressBook = (network: Network = globalContext.network) => {
+  return NetworkAddressBook[network];
 };
 
-export const getAddress = (id: ContractId) => {
-  return getAddressBook()[id];
+export const getAddress = (id: ContractId, network?: Network) => {
+  return getAddressBook(network)[id];
 };
 
 export type ContractIsh = ContractId | string;
@@ -51,6 +52,8 @@ export const getRouterContract = (id: ContractIsh) =>
   getContract(id, UniswapV2Router);
 export const getErcContract = (id: ContractIsh) =>
   getReadOnlyContract(id, Erc20ABI);
+export const getErcContractWritable = (id: ContractIsh) =>
+  getContract(id, Erc20ABI);
 export const getRebasingTokenContract = (id: ContractIsh, network?: Network) =>
   getReadOnlyContract(id, RebasingERC20ABI, network);
 export const getPairContract = (id: ContractIsh) =>
@@ -61,9 +64,17 @@ export const getReadOnlyContract = (
   abi: any,
   network?: Network,
 ) => {
-  const address = typeof id === 'string' ? id : getAddress(id);
+  const address = typeof id === 'string' ? id : getAddress(id, network);
   const provider = getProvider(network);
   return new Contract(address, abi, provider);
+};
+
+export const useErcContract = (id: ContractIsh) => useContract(id, Erc20ABI);
+
+export const useContract = (id: ContractIsh, abi: any) => {
+  const address = typeof id === 'string' ? id : getAddress(id);
+  const wallet = useWalletContext();
+  return new Contract(address, abi, wallet);
 };
 
 export const getContract = (id: ContractIsh, abi: any) => {

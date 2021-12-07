@@ -1,20 +1,13 @@
-import {useEffect, useMemo, useState} from 'react';
-import {addressIsValid, getProvider} from './Web3Helpers';
-import {globalContext} from './Network';
+import {useEffect, useState} from 'react';
+import {useWalletContext} from './WalletProvider';
 
-export const useProvider = () =>
-  useMemo(() => getProvider(), [globalContext.network]);
-
-export const useEthBalance = (address: string) => {
-  const provider = useProvider();
+export const useNetworkCurrencyBalance = () => {
+  const wallet = useWalletContext();
   const [balance, setBalance] = useState(0);
   useEffect(() => {
-    if (!addressIsValid(address)) {
-      return setBalance(0);
-    }
-    provider.getBalance(address).then(bal => {
+    wallet.getBalance().then(bal => {
       setBalance(bal.div(1e9).toNumber() / 1e9);
     });
-  }, [provider, address]);
+  }, [wallet]);
   return balance;
 };

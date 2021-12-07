@@ -17,10 +17,6 @@ export const useCoins = (): ContractId[] => {
   return coinLookup[network];
 };
 
-export const getOhmPrice = async () => {
-  return getRelativePriceInPair(ContractId.OHM_DAI, ContractId.DAI);
-};
-
 export const useOhmIndex = () => {
   const [index, setIndex] = useState<number>(0);
   useEffect(() => {
@@ -40,7 +36,25 @@ export const getOhmIndex = async () => {
   return (await rebasingToken.index()) / 1e9;
 };
 
-export const getGOhmPrice = async () => {
+export const getOhmPrice = async () => {
+  if (globalContext.network === Network.ETHEREUM) {
+    return getRelativePriceInPair(ContractId.OHM_DAI, ContractId.DAI);
+  } else {
+    const gOhmPrice = await getGOhmPrice();
+    const ohmIndex = await getOhmIndex();
+    return gOhmPrice / ohmIndex;
+  }
+};
+
+export const useOhmPrice = () => {
+  const [price, setPrice] = useState<number>(0);
+  useEffect(() => {
+    getOhmPrice().then(_price => setPrice(_price));
+  }, [price]);
+  return price;
+};
+
+export const getGOhmPrice = async (): Promise<number> => {
   const {network} = globalContext;
   if (network === Network.ETHEREUM) {
     const index = await getOhmIndex();
@@ -69,19 +83,23 @@ export const usePrices = (): Lookup<number> => {
 
   useEffect(() => {
     const load = async () => {
-      if (network === Network.ETHEREUM) {
-        const ohmPrice = await getOhmPrice();
-        const gOhmPrice = await getGOhmPrice();
-        setPrices({
-          [ContractId.OHM]: ohmPrice,
-          [ContractId.SOHM]: ohmPrice,
-          [ContractId.GOHM]: gOhmPrice,
-        });
-      } else {
-        const gOhmPrice = await getGOhmPrice();
-        setPrices({
-          [ContractId.GOHM]: gOhmPrice,
-        });
+      try {
+        if (network === Network.ETHEREUM) {
+          const ohmPrice = await getOhmPrice();
+          const gOhmPrice = await getGOhmPrice();
+          setPrices({
+            [ContractId.OHM]: ohmPrice,
+            [ContractId.SOHM]: ohmPrice,
+            [ContractId.GOHM]: gOhmPrice,
+          });
+        } else {
+          const gOhmPrice = await getGOhmPrice();
+          setPrices({
+            [ContractId.GOHM]: gOhmPrice,
+          });
+        }
+      } catch (e) {
+        console.error('error getting prices', e);
       }
     };
     load().then(() => null);
@@ -91,7 +109,7 @@ export const usePrices = (): Lookup<number> => {
   return prices;
 };
 
-export const useBalances = (): Lookup<number> => {
+export const useBalances = (update: number = 0): Lookup<number> => {
   const coins = useCoins();
   const address = useAddress();
   const [balances, setBalances] = useState<Lookup<number>>({});
@@ -121,14 +139,12 @@ export const useBalances = (): Lookup<number> => {
       setBalances(_balances);
     };
     load().then(() => null);
-  }, [address]);
-
-  console.log('balances', balances, 'address', address);
+  }, [address, update]);
   return balances;
 };
 
-export const useTotalUsdBalance = (): number => {
-  const balances = useBalances();
+export const useTotalUsdBalance = (update: number = 0): number => {
+  const balances = useBalances(update);
   const prices = usePrices();
   return Object.entries(balances)
     .map(([coinId, amount]) => {
