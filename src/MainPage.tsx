@@ -13,14 +13,14 @@ function MainPage() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen
-            name={HomePage.name}
+            name={HomePage.routeName}
             component={HomePage}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name={DashboardPage.name}
+            name={DashboardPage.routeName}
             component={DashboardPage}
             options={{
               headerShown: false,

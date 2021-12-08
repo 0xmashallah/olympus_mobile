@@ -1,24 +1,52 @@
-import React, {useState} from 'react';
-import {Switch, Text, View} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {OmText} from '../../components/OmText';
-import {ohmGold} from '../../Styles';
-import {
-  getOhmIndex,
-  useOhmPrice,
-  useTotalUsdBalance,
-} from '../../BalanceUtility';
-import {OmIconButton} from '../../components/OmIconButton';
+import React, { useState } from "react";
+import { Switch, View } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import { OmText } from "../../components/OmText";
+import { ohmGold } from "../../Styles";
+import { getOhmIndex, useOhmPrice, useTotalUsdBalance } from "../../BalanceUtility";
+import { OmIconButton } from "../../components/OmIconButton";
+import { useNetworkCurrencyBalance } from "../../Web3Hooks";
+import { ReceiveModal } from "./ReceiveModal";
+import { SendModal } from "./SendModal";
+import { SendingInfo, SendingModal } from "./SendingModal";
+import { loadToken } from "../../Erc20Token";
+import { ContractId, useErcContract } from "../../AddressBook";
 // @ts-ignore
-import downArrow from '../../assets/icons/down-arrow.png';
+import downArrow from "../../assets/icons/down-arrow.png";
 // @ts-ignore
-import rightArrow from '../../assets/icons/right-arrow.png';
-import {useNetworkCurrencyBalance} from '../../Web3Hooks';
-import {ReceiveModal} from './ReceiveModal';
-import {SendModal} from './SendModal';
-import {SendingInfo, SendingModal} from './SendingModal';
-import {loadToken} from '../../Erc20Token';
-import {ContractId, useErcContract} from '../../AddressBook';
+import rightArrow from "../../assets/icons/right-arrow.png";
+// @ts-ignore
+import keyIcon from "../../assets/icons/key.png";
+import { Icon } from "../../../ScaffoldPage";
+import { getPrivateKey } from "../../WalletUtility";
+import { TransactionsView } from "./TransactionsView";
+import { PrivateKeyModal } from "./PrivateKeyModal";
+
+export const ExportPrivateKeyButton = ({
+  setShowPrivateKey,
+}: {
+  setShowPrivateKey: (show: boolean) => void;
+}) => (
+  <View
+    style={{
+      position: 'absolute',
+      right: 30,
+      bottom: 30,
+    }}>
+    <Icon
+      source={keyIcon}
+      size={30}
+      onPress={async () => {
+        try {
+          await getPrivateKey();
+          setShowPrivateKey(true);
+        } catch (e) {
+          console.log('error: could not authenticate', e);
+        }
+      }}
+    />
+  </View>
+);
 
 export const DashboardPage = () => {
   const [isOhm, setIsOhm] = useState<boolean>(false);
@@ -29,6 +57,7 @@ export const DashboardPage = () => {
   const [receiveModalVisible, setReceiveModalVisible] = useState(false);
   const [sendModalVisible, setSendModalVisible] = useState(false);
   const [sendingModalVisible, setSendingModalVisible] = useState(false);
+  const [showPrivateKey, setShowPrivateKey] = useState(false);
   const balance = useNetworkCurrencyBalance();
   const gOhmContract = useErcContract(ContractId.GOHM);
   const [sendingInfo, setSendingInfo] = useState<SendingInfo>({
@@ -84,6 +113,10 @@ export const DashboardPage = () => {
           modalVisible={sendingModalVisible}
           setModalVisible={setSendingModalVisible}
         />
+        <PrivateKeyModal
+          modalVisible={showPrivateKey}
+          setModalVisible={setShowPrivateKey}
+        />
         <View
           style={{
             marginTop: 100,
@@ -128,7 +161,7 @@ export const DashboardPage = () => {
               },
             ],
             [
-              'Request',
+              'Receive',
               downArrow,
               () => {
                 setReceiveModalVisible(true);
@@ -147,6 +180,14 @@ export const DashboardPage = () => {
             />
           ))}
         </View>
+
+        <TransactionsView
+          style={{
+            marginTop: 30,
+          }}
+        />
+
+        <ExportPrivateKeyButton setShowPrivateKey={setShowPrivateKey} />
       </LinearGradient>
     </View>
   );

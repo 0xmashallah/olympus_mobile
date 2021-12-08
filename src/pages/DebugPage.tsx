@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Button, View} from 'react-native';
-import {OmButton} from '../components/OmIconButton';
 import Keychain, {ACCESS_CONTROL} from 'react-native-keychain';
 import { useWallet } from "../WalletProvider";
+import { OmButton } from "../components/OmButton";
 
 export const DebugPage = () => {
   const wallet = useWallet();

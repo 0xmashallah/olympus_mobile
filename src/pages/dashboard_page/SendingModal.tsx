@@ -1,12 +1,5 @@
 import React, {PropsWithChildren} from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  Linking,
-  Modal,
-  Text,
-  View,
-} from 'react-native';
+import {ActivityIndicator, Button, Linking, Modal, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useOhmPrice} from '../../BalanceUtility';
 import {SuccessMessage} from './SuccessMessage';

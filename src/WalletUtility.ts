@@ -29,7 +29,7 @@ export const loadPrivateKey = async () => {
   return _key;
 };
 
-export const usePrivateKey = () => {
+export const usePrivateKey = (force?: number) => {
   const [privateKey, setPrivateKey] = useState<string>('');
   useEffect(() => {
     const load = async () => {
@@ -37,7 +37,7 @@ export const usePrivateKey = () => {
       setPrivateKey(_key);
     };
     load().then(() => null);
-  }, []);
+  }, [force]);
   return privateKey;
 };
 

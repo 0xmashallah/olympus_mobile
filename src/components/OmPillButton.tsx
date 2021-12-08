@@ -1,5 +1,6 @@
-import {OmButton, OmButtonProps} from './OmIconButton';
+import {OmButtonProps} from './OmIconButton';
 import React from 'react';
+import {OmButton} from './OmButton';
 
 export const OmPillButton = (b: OmButtonProps) => (
   <OmButton

@@ -1,12 +1,12 @@
 import React from 'react';
 import {useWalletContext} from '../../WalletProvider';
-import {Modal, Text, View} from 'react-native';
+import {Alert, Modal, Text, View} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {grayTranslucent} from '../../Styles';
-import {OmButton} from '../../components/OmIconButton';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {ModalShell} from '../../components/ModalShell';
 import {ModalHeader} from '../../components/ModalHeader';
+import {OmButton} from '../../components/OmButton';
 
 export const ReceiveModal = ({
   modalVisible,
@@ -66,7 +66,10 @@ export const ReceiveModal = ({
               {wallet?.address}
             </Text>
             <OmButton
-              onPress={() => Clipboard.setString(wallet?.address ?? '')}
+              onPress={() => {
+                Clipboard.setString(wallet.address);
+                Alert.alert('Your key has been copied!');
+              }}
               title={'COPY'}
               textStyle={{
                 fontSize: 12,

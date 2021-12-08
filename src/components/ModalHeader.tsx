@@ -36,7 +36,7 @@ export const ModalHeader = ({
     )}
     <Text
       style={{
-        flex: 1,
+        flex: 4,
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 16,

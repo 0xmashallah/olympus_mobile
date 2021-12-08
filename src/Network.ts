@@ -20,7 +20,7 @@ export const setNetwork = (network: Network) => {
 
 export const RPCAddressBook: AddressBookType = {
   [Network.ETHEREUM]:
-    'https://mainnet.infura.io/v3/6ee202fa79b044de91a589ff621228ed',
+    'https://eth-mainnet.alchemyapi.io/v2/DffrXz5NVV-fpp3-rLybLeftbmzZQFFW',
   [Network.AVAX]: 'https://api.avax.network/ext/bc/C/rpc',
   [Network.MOONRIVER]: 'https://rpc.moonriver.moonbeam.network',
 };
